@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>特典①【YouTube Data API × vidIQ】YouTube企画リサーチ自動化＆競合の上位互換YouTube作成マニュアル｜星川ユウヤ 特別特典</title>
+<meta name="description" content="YouTube Data API v3とvidIQを使った企画リサーチ自動化スプレッドシートの仕組み解説と、.envセキュリティ対策込みのワンクリック構築プロンプト。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%23d946ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E特%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<div id="progressBar"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><span class="dot">特</span>星川ユウヤ 特別特典</a>
+    <button class="nav-burger" aria-label="メニュー"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="tokuten1.html">① YouTubeリサーチ自動化</a>
+      <a href="tokuten2.html">② API/MCP大全</a>
+      <a href="tokuten3.html">③ ローカル一撃構築</a>
+      <a class="nav-cta" href="index.html#cta">🎁 セミナー特典を受け取る</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">特典トップ</a> ／ 特典①</div>
+    <h1>【YouTube Data API × vidIQ】<br><span class="grad">YouTube企画リサーチ自動化</span>＆<br>競合の上位互換YouTube作成マニュアル</h1>
+    <p class="lead">僕が実際に運用しているYouTubeリサーチ・スプレッドシートの仕組みを完全解説した後、コピーして貼り付けるだけで誰でも同じ環境を作れる「ワンクリック構築プロンプト」を渡します。APIキーの取得手順と.envによるセキュリティ対策まで、すべてこのページに入っています。</p>
+  </div>
+</header>
+
+<main class="section">
+<div class="container-narrow prose">
+
+<h2 id="overview">1. この特典でできるようになること</h2>
+<p>キーワードを入れるだけで、YouTube上の競合動画・競合チャンネルのデータが自動で集まり、<strong>「どの動画が、チャンネル規模に対して異常に伸びているか（＝企画力で伸びたお宝動画か）」まで数値で判定できるリサーチシート</strong>が手に入ります。</p>
+<ul>
+  <li>検索上位・高再生の動画を、<strong>サムネイル画像つき</strong>で一覧化（URLの羅列ではなく、シート上でサムネが見える状態）</li>
+  <li>再生回数・登録者数から<strong>拡散率（再生数 ÷ 登録者数）</strong>を自動計算し、「登録者は少ないのに再生されている動画」を発掘</li>
+  <li>vidIQで<strong>月間検索ボリューム・競合度</strong>を補完し、「需要はあるのに競合が弱いキーワード」を特定</li>
+  <li>集めたベンチマークをもとに、<strong>競合の上位互換となる企画</strong>を組み立てる（やり方は§4で解説）</li>
+</ul>
+
+<div class="callout info">
+  <span class="ico">💡</span>
+  <p><strong>なぜスプレッドシートなのか：</strong>リサーチ結果を「流れていくチャット」ではなく「蓄積されるシート」に残すことで、過去のリサーチと比較でき、チームにも共有できます。サムネイルを画像で並べるのは、企画の勝ち筋はタイトルよりも先に「サムネの絵柄」に現れるからです。</p>
+</div>
+
+<h2 id="prepare">2. 事前に用意するもの</h2>
+<div class="table-wrap">
+<table class="rich">
+  <tr><th>用意するもの</th><th>必須/任意</th><th>費用</th><th>入手先</th></tr>
+  <tr><td><strong>Googleアカウント</strong></td><td>必須</td><td>無料</td><td>お持ちのものでOK</td></tr>
+  <tr><td><strong>YouTube Data API v3 のAPIキー</strong></td><td>必須</td><td>無料（1日10,000ユニットまで）</td><td>Google Cloud Console（§5で手順解説）</td></tr>
+  <tr><td><strong>デスクトップアプリ版 Claude Code</strong>（またはCursor / Codex CLI）</td><td>必須</td><td>各サブスクに準拠</td><td>公式サイト</td></tr>
+  <tr><td><strong>Python 3</strong></td><td>必須（Macは標準搭載）</td><td>無料</td><td>構築プロンプトが確認・案内します</td></tr>
+  <tr><td><strong>vidIQアカウント</strong></td><td>任意（推奨）</td><td>無料プランあり</td><td>vidiq.com（§7で接続手順解説）</td></tr>
+</table>
+</div>
+<div class="tool-links" style="margin-top:18px">
+  <a class="doc-btn" href="https://developers.google.com/youtube/v3/getting-started?hl=ja" target="_blank" rel="noopener">YouTube Data API 公式スタートガイド</a>
+  <a class="doc-btn" href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console</a>
+  <a class="doc-btn" href="https://vidiq.com/" target="_blank" rel="noopener">vidIQ 公式サイト</a>
+  <a class="doc-btn alt" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a>
+</div>
+
+<h2 id="system">3. 仕組み解説：リサーチシートはこう動いている</h2>
+
+<h3>3-1. データ取得の流れ（3段構え）</h3>
+<p>YouTube Data APIは「1回で全部取れる」APIではありません。僕のシートは、次の3つのエンドポイントをリレーさせてデータを完成させています。</p>
+<div class="steps">
+  <div class="step">
+    <h4>search.list ── キーワードで動画を検索する</h4>
+    <div class="step-body"><p>キーワード（例：「AI マーケティング」）と期間・並び順を指定して、該当する動画IDのリストを取得します。日本向けリサーチでは <code>regionCode=JP</code> と <code>relevanceLanguage=ja</code> を指定するのがポイント。<strong>1回100ユニット</strong>を消費する“高コスト”な呼び出しなので、ここは無駄撃ちしない設計にします。</p></div>
+  </div>
+  <div class="step">
+    <h4>videos.list ── 動画の詳細と統計をまとめて取る</h4>
+    <div class="step-body"><p>search.listで得た動画IDを<strong>50件ずつまとめて</strong>渡し、<code>snippet</code>（タイトル・概要欄・サムネURL・公開日）、<code>contentDetails</code>（動画尺）、<code>statistics</code>（再生回数・高評価数・コメント数）を一括取得します。こちらは1回1ユニットと激安です。</p></div>
+  </div>
+  <div class="step">
+    <h4>channels.list ── チャンネル情報で「規模」を測る</h4>
+    <div class="step-body"><p>動画の投稿チャンネルIDを50件ずつ渡し、<strong>登録者数・チャンネル開設日・総投稿本数</strong>を取得。ここで取った登録者数が、次の「拡散率」計算の分母になります。</p></div>
+  </div>
+</div>
+
+<h3>3-2. スプレッドシートの列構成（17列）</h3>
+<p>取得したデータは、以下の17列でシートに書き込みます。<strong>この列構成自体がリサーチの型</strong>です。</p>
+<div class="table-wrap">
+<table class="rich">
+  <tr><th>#</th><th>列名</th><th>中身・計算式</th><th>何を見る列か</th></tr>
+  <tr><td>1</td><td><strong>リサーチ日</strong></td><td>実行日（YYYY-MM-DD）</td><td>いつ時点のデータか</td></tr>
+  <tr><td>2</td><td><strong>チャンネル名</strong></td><td>channels.list の snippet.title</td><td>競合の識別</td></tr>
+  <tr><td>3</td><td><strong>チャンネルURL</strong></td><td>channelIdから生成</td><td>ワンクリックで競合訪問</td></tr>
+  <tr><td>4</td><td><strong>登録者数</strong></td><td>statistics.subscriberCount</td><td>チャンネル規模（拡散率の分母）</td></tr>
+  <tr><td>5</td><td><strong>サムネイル画像</strong></td><td><code>=IMAGE("https://img.youtube.com/vi/動画ID/0.jpg",4,180,320)</code></td><td>勝ちサムネの絵柄を目で比較</td></tr>
+  <tr><td>6</td><td><strong>タイトル</strong></td><td>snippet.title</td><td>フック・訴求の型</td></tr>
+  <tr><td>7</td><td><strong>動画URL</strong></td><td>videoIdから生成</td><td>実物確認</td></tr>
+  <tr><td>8</td><td><strong>動画尺</strong></td><td>contentDetails.duration（ISO 8601→分秒変換）</td><td>ショート/ロングの判別・適正尺</td></tr>
+  <tr><td>9</td><td><strong>概要欄</strong></td><td>snippet.description</td><td>導線設計（LINE誘導等）の研究</td></tr>
+  <tr><td>10</td><td><strong>再生回数</strong></td><td>statistics.viewCount</td><td>需要の絶対量</td></tr>
+  <tr><td>11</td><td><strong>評価数</strong></td><td>statistics.likeCount</td><td>視聴者満足の絶対量</td></tr>
+  <tr><td>12</td><td><strong>評価率</strong></td><td>いいね数 ÷ 再生回数 × 100</td><td>内容の満足度（%）</td></tr>
+  <tr><td>13</td><td><strong>コメント数</strong></td><td>statistics.commentCount</td><td>エンゲージの絶対量</td></tr>
+  <tr><td>14</td><td><strong>コメント率</strong></td><td>コメント数 ÷ 再生回数 × 100</td><td>視聴者の熱量（%）</td></tr>
+  <tr><td>15</td><td><strong>拡散率</strong></td><td><strong>再生回数 ÷ 登録者数</strong></td><td>★最重要。企画力の指標</td></tr>
+  <tr><td>16</td><td><strong>公開日</strong></td><td>snippet.publishedAt</td><td>鮮度・伸びる速度の把握</td></tr>
+  <tr><td>17</td><td><strong>開設日／動画投稿数</strong></td><td>channels.list の snippet.publishedAt / statistics.videoCount</td><td>後発でも勝てるかの判断材料</td></tr>
+</table>
+</div>
+
+<div class="callout tip">
+  <span class="ico">🎯</span>
+  <p><strong>拡散率の読み方：</strong>拡散率が<strong>1.0以上</strong>（再生数が登録者数を超えている）の動画は、既存ファンの力ではなく<strong>「企画・サムネ・タイトルの力」でブラウジングや検索から伸びた可能性が高い</strong>動画です。登録者の少ないチャンネルで拡散率が高い動画ほど、真似する価値のある「お宝ベンチマーク」になります。逆に登録者100万人で拡散率0.05のような動画は、ファンが見ているだけなので企画の参考にはなりません。</p>
+</div>
+
+<h3>3-3. サムネイルを「画像で」並べるIMAGE数式</h3>
+<p>YouTubeのサムネイルは、動画IDさえ分かれば固定URLで取得できます。スプレッドシートのセルにこの数式を入れると、シート上にサムネがそのまま表示されます。</p>
+<div class="codebox">
+  <div class="codebox-head">
+    <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>サムネイル表示のIMAGE数式（Googleスプレッドシート用）</span></div>
+    <button class="copy-btn" data-copy-target="code-image">📋 コピー</button>
+  </div>
+  <pre id="code-image">=IMAGE("https://img.youtube.com/vi/ここに動画ID/0.jpg", 4, 180, 320)</pre>
+</div>
+<p>第2引数の <code>4</code> は「サイズを数値指定するモード」、続く <code>180, 320</code> が高さ・幅です。行の高さを180px程度に広げておくと、サムネがきれいに並びます。構築プロンプトで作るスクリプトは、この数式を自動でCSVに埋め込みます。</p>
+
+<h3>3-4. vidIQは「Data APIで取れないもの」を埋める</h3>
+<p>YouTube Data APIは実績データ（再生・登録者）は取れますが、<strong>「そのキーワードが月に何回検索されているか」「競合がどれくらい強いか」は取れません</strong>。そこをvidIQで補完します。役割分担はこうです。</p>
+<div class="table-wrap">
+<table class="rich">
+  <tr><th>知りたいこと</th><th>使うツール</th><th>見る指標</th></tr>
+  <tr><td>すでに伸びている動画・チャンネルの実績</td><td><strong>YouTube Data API</strong></td><td>再生回数・登録者数・拡散率・評価率</td></tr>
+  <tr><td>キーワードの需要と競合の強さ</td><td><strong>vidIQ</strong></td><td>月間検索ボリューム・Competition（競合度）・Overallスコア</td></tr>
+  <tr><td>登録者比で異常に伸びた「お宝動画」の発掘</td><td><strong>vidIQ（outliers）＋ Data API</strong></td><td>アウトライア（外れ値）動画・拡散率</td></tr>
+</table>
+</div>
+<p>vidIQはMCP（Model Context Protocol）でClaude Codeに直接つなげられるので、「このキーワードの検索ボリュームと競合度を調べて」とAIに話しかけるだけでデータが返ってきます（接続手順は§7）。</p>
+
+<h2 id="joui">4. 「競合の上位互換YouTube」を作る流れ</h2>
+<p>シートが完成したら、それをどう企画に変えるか。僕の運用は次の5段階です。</p>
+<div class="steps">
+  <div class="step">
+    <h4>ベンチマーク抽出 ── シートを拡散率降順に並べ替える</h4>
+    <div class="step-body"><p>リサーチシートを拡散率で降順ソートし、上から「自分のジャンル・ターゲットに合う動画」を2〜3本ピックアップします。この時、<strong>登録者数が自分と同規模〜少し上のチャンネル</strong>を優先すると、再現性の高いベンチマークになります。</p></div>
+  </div>
+  <div class="step">
+    <h4>スコアリング ── なぜ伸びたかを数値で分解する</h4>
+    <div class="step-body"><p>候補動画の「拡散率・評価率・コメント率・動画尺・公開日」を見比べ、伸びた理由が<strong>企画（サムネ・タイトル）なのか、内容（評価率・コメント率が高い）なのか</strong>を切り分けます。vidIQで検索ボリュームも確認し、「需要があるのに供給が弱い」ことを裏取りします。</p></div>
+  </div>
+  <div class="step">
+    <h4>A＋B＝C マージ企画 ── 丸パクリではなく「ニーズの融合」</h4>
+    <div class="step-body"><p>ベンチマーク2〜3本から「視聴者が共通して求めているもの」を抽出し、それを<strong>自分の実績・経験・一次情報と掛け合わせて</strong>1本の企画にします。A動画の切り口＋B動画の題材＝C（自分だけの上位互換企画）。単体の動画を真似るのではなく、複数の勝ち動画の「共通ニーズ」を1本で満たすから上位互換になります。</p></div>
+  </div>
+  <div class="step">
+    <h4>サムネ・タイトルの日本市場ローカライズ</h4>
+    <div class="step-body"><p>海外の伸び動画をベンチマークにした場合、タイトルの直訳は禁止。<strong>日本の視聴者の悩みの言葉</strong>に置き換えます。サムネはシート上に並んだ勝ちサムネの「絵柄の共通点」（顔の大きさ・文字数・色数）を踏襲します。</p></div>
+  </div>
+  <div class="step">
+    <h4>台本化 → 投稿 → シートに実績を蓄積</h4>
+    <div class="step-body"><p>企画が決まったら台本→撮影→投稿。投稿後の自分の動画も同じシートで計測すると、「自分の拡散率」がベンチマークとの距離を教えてくれます。リサーチ→投稿→計測のループが回り始めたら、このシステムは完成です。</p></div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <span class="ico">✍️</span>
+  <p><strong>大事な運用ルール：</strong>タイトルやサムネ文言をAIに考えさせる時も、<strong>リサーチシートの実データと自分自身の言葉・実績だけを素材にする</strong>こと。AIに「それっぽい強いコピー」をゼロから作文させると、出典のない誇張表現が混ざりチャンネルの信頼を毀損します。ベンチマークにある表現の型 × 自分の一次情報、が原則です。</p>
+</div>
+
+<h2 id="apikey">5. YouTube Data APIキーの取得手順（公式ドキュメント準拠）</h2>
+<p>所要時間は約5分。費用は無料です（無料枠：<strong>1日あたり10,000ユニット</strong>。search.listが1回100ユニットなので、1日約100回の検索が可能。個人のリサーチ用途では十分すぎる量です）。</p>
+<div class="steps">
+  <div class="step">
+    <h4>Google Cloud Consoleにアクセスし、プロジェクトを作る</h4>
+    <div class="step-body">
+      <p><a href="https://console.cloud.google.com/" target="_blank" rel="noopener">console.cloud.google.com</a> を開き、Googleアカウントでログイン。画面上部のプロジェクト選択 →「新しいプロジェクト」→ 名前を「youtube-research」などにして作成します。初回は利用規約への同意が求められます。</p>
+    </div>
+  </div>
+  <div class="step">
+    <h4>YouTube Data API v3 を有効化する</h4>
+    <div class="step-body">
+      <p>左メニュー「APIとサービス」→「ライブラリ」→ 検索窓に「YouTube Data API v3」と入力 → 選択して<strong>「有効にする」</strong>をクリック。</p>
+    </div>
+  </div>
+  <div class="step">
+    <h4>APIキーを発行する</h4>
+    <div class="step-body">
+      <p>「APIとサービス」→「認証情報」→「＋認証情報を作成」→<strong>「APIキー」</strong>。発行されたキー（<code>AIza...</code>で始まる文字列）が表示されます。<strong>この画面のままにして、次のステップで制限をかけてからコピーしてください。</strong></p>
+    </div>
+  </div>
+  <div class="step">
+    <h4>キーに制限をかける（重要）</h4>
+    <div class="step-body">
+      <p>発行したキーの「APIキーを編集」→「APIの制限」→「キーを制限」→ <strong>YouTube Data API v3 だけにチェック</strong>して保存。こうしておくと、万一キーが漏れても他のGoogleサービス（課金が発生し得るもの）には使えません。</p>
+    </div>
+  </div>
+  <div class="step">
+    <h4>キーを安全な場所に控える</h4>
+    <div class="step-body">
+      <p>コピーしたキーは、パスワードマネージャーか、これから作る<code>.env</code>ファイルにだけ保存します。<strong>チャットやメモアプリ、スクリーンショットには残さないでください。</strong></p>
+    </div>
+  </div>
+</div>
+<div class="tool-links">
+  <a class="doc-btn" href="https://developers.google.com/youtube/v3/getting-started?hl=ja" target="_blank" rel="noopener">公式：YouTube Data API スタートガイド</a>
+  <a class="doc-btn" href="https://developers.google.com/youtube/v3/docs?hl=ja" target="_blank" rel="noopener">公式：APIリファレンス</a>
+  <a class="doc-btn" href="https://cloud.google.com/docs/authentication/api-keys?hl=ja" target="_blank" rel="noopener">公式：APIキー管理のベストプラクティス</a>
+</div>
+
+<h2 id="env">6. セキュリティ対策：APIキーは「.env」で管理する</h2>
+<p>APIキーをスクリプトやプロンプトに直接書き込むのは絶対NGです。理由は3つ。</p>
+<ul>
+  <li><strong>流出リスク：</strong>スクリプトを誰かに共有したり、GitHubにアップした瞬間、キーが世界に公開されます（クローラーは公開リポジトリのキーを数分で発見します）</li>
+  <li><strong>差し替え地獄：</strong>キーを再発行するたびに、スクリプト内の全記述を探して書き換える必要が生じます</li>
+  <li><strong>AIチャットへの混入：</strong>キー入りのコードをAIに貼ると、会話ログにキーが残ります</li>
+</ul>
+<p>そこで、プロジェクトフォルダ直下に<code>.env</code>という「キー専用の隠しファイル」を作り、スクリプトはそこから読み込む方式にします。この方式なら、コードは自由に共有できて、キーは自分のPCから出ません。</p>
+<div class="codebox">
+  <div class="codebox-head">
+    <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>.env ファイルの中身（例）</span></div>
+    <button class="copy-btn" data-copy-target="code-env">📋 コピー</button>
+  </div>
+  <pre id="code-env">YOUTUBE_API_KEY=ここに自分のAPIキーを貼る</pre>
+</div>
+<div class="codebox">
+  <div class="codebox-head">
+    <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>.gitignore（.envを共有対象から除外する設定）</span></div>
+    <button class="copy-btn" data-copy-target="code-gitignore">📋 コピー</button>
+  </div>
+  <pre id="code-gitignore">.env
+output/
+__pycache__/</pre>
+</div>
+<div class="callout info">
+  <span class="ico">🛡</span>
+  <p><strong>もしキーが漏れたら：</strong>慌てず、Google Cloud Consoleの「認証情報」から該当キーを<strong>削除→再発行</strong>すれば旧キーは即座に無効になります。§5-4の「APIの制限」をかけていれば、漏洩時の被害はYouTube Data APIの無料枠消費だけに限定されます。この「制限＋.env＋即再発行」の3点セットが個人でできる現実的なセキュリティ対策です。</p>
+</div>
+<p>──とはいえ、この.env設定も含めて<strong>下の構築プロンプトがすべて自動でやってくれる</strong>ので、仕組みだけ理解しておけばOKです。</p>
+
+<h2 id="vidiq">7. vidIQ MCPをClaude Codeにつなぐ（任意・推奨）</h2>
+<p>vidIQのMCPサーバーをClaude Codeに登録すると、AIとの会話の中で検索ボリューム・競合度・アウトライア動画を直接取得できるようになります。</p>
+<div class="steps">
+  <div class="step">
+    <h4>vidIQのアカウントを作る</h4>
+    <div class="step-body"><p><a href="https://vidiq.com/" target="_blank" rel="noopener">vidiq.com</a>でアカウント登録（Googleアカウント連携が楽です）。無料プランでも基本のキーワードリサーチは動きます。</p></div>
+  </div>
+  <div class="step">
+    <h4>プロジェクトに .mcp.json を置く</h4>
+    <div class="step-body"><p>リサーチ用フォルダの直下に、以下の内容の<code>.mcp.json</code>を作成します（構築プロンプトに任せてもOK）。</p>
+      <div class="codebox">
+        <div class="codebox-head">
+          <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>.mcp.json（vidIQ MCP接続設定）</span></div>
+          <button class="copy-btn" data-copy-target="code-mcp">📋 コピー</button>
+        </div>
+        <pre id="code-mcp">{
+  "mcpServers": {
+    "vidiq": {
+      "type": "http",
+      "url": "https://mcp.vidiq.com/mcp"
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <h4>Claude Codeを再起動して認証する</h4>
+    <div class="step-body"><p>Claude Codeを開き直すとvidIQ MCPの接続確認が出るので許可し、ブラウザでvidIQアカウントの認証（OAuth）を済ませます。以降は「『AI 副業』の検索ボリュームと競合度をvidIQで調べて」のように自然言語で使えます。</p></div>
+  </div>
+</div>
+
+<h2 id="prompt">8. ワンクリック構築プロンプト（コピーして貼るだけ）</h2>
+<p>以下がこの特典の本体です。<strong>「コピー」ボタン→デスクトップアプリ版Claude Codeに貼り付けて送信</strong>してください。AIがあなたの環境を確認しながら、フォルダ作成→.envセキュリティ設定→リサーチスクリプト構築→スプレッドシート化→テスト実行まで、対話形式で最後まで面倒を見てくれます。CursorやCodex CLIでもそのまま使えます。</p>
+
+<div class="codebox collapsible">
+  <div class="codebox-head">
+    <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>YouTube企画リサーチ自動化システム 一撃構築プロンプト</span></div>
+    <button class="copy-btn" data-copy-target="code-prompt1">📋 プロンプト全文をコピー</button>
+  </div>
+  <pre id="code-prompt1">あなたは「YouTube企画リサーチ自動化システム」の構築エージェントです。
+これから、YouTube Data API v3 を使った競合リサーチ・スプレッドシートシステムを、このPC上に構築してください。
+私はプログラミング初心者の可能性があります。専門用語には一言ずつ説明を添え、1ステップずつ確認を取りながら進めてください。
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ ゴール
+━━━━━━━━━━━━━━━━━━━━━━
+キーワードを指定して実行すると、
+1. YouTubeで該当キーワードの動画を検索し（search.list）
+2. 各動画の詳細・統計を取得し（videos.list）
+3. 投稿チャンネルの規模データを取得し（channels.list）
+4. 拡散率などの指標を自動計算して
+5. Googleスプレッドシートに貼れるリサーチシート（CSV）を出力する
+システムを完成させる。APIキーは .env ファイルで安全に管理する。
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 0：環境ヒアリング（最初に必ず実施）
+━━━━━━━━━━━━━━━━━━━━━━
+以下を1つずつ質問し、回答を待ってから次に進むこと。
+
+Q1. OSはMacですか、Windowsですか？
+Q2. ターミナルで python3 --version（Windowsは python --version）を実行して、Python 3.9以上が入っているか確認させてください。無ければインストールを案内します。
+Q3. YouTube Data API v3 のAPIキーは取得済みですか？
+    - 未取得の場合は、次の手順を案内して取得を待つこと：
+      (1) https://console.cloud.google.com/ にログイン
+      (2) 新しいプロジェクトを作成（名前例: youtube-research）
+      (3) 「APIとサービス」→「ライブラリ」→「YouTube Data API v3」を検索して「有効にする」
+      (4) 「APIとサービス」→「認証情報」→「＋認証情報を作成」→「APIキー」
+      (5) 作成したキーの「APIの制限」で「YouTube Data API v3」のみに制限して保存
+    - ⚠️ 重要：APIキーをこのチャット欄に貼らないよう必ず伝えること。キーは後でユーザー自身が .env ファイルに直接書き込む。
+Q4. リサーチしたいキーワードを1〜10個教えてください（例：AI マーケティング／AI 副業／ChatGPT 使い方）。
+Q5. フィルタ条件の希望はありますか？（デフォルト：直近3ヶ月・最低再生数30,000回・横長動画。ショート動画中心なら教えてください）
+Q6. vidIQ（キーワードの検索ボリューム分析ツール）も接続しますか？（任意。接続する場合はSTEP 5で設定）
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 1：プロジェクトフォルダの作成
+━━━━━━━━━━━━━━━━━━━━━━
+ホームディレクトリ直下に以下の構成を作成すること。
+
+youtube-research/
+├── .env                  ← APIキー置き場（ユーザーが自分で記入）
+├── .gitignore            ← .env と output/ を除外
+├── README.md             ← 使い方（このSTEPの最後に生成）
+├── youtube_research.py   ← メインスクリプト
+└── output/               ← CSVの出力先
+
+.gitignore の中身：
+.env
+output/
+__pycache__/
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 2：セキュリティ設定（スキップ禁止）
+━━━━━━━━━━━━━━━━━━━━━━
+1. .env ファイルを次の1行のテンプレートで作成する：
+   YOUTUBE_API_KEY=
+2. ユーザーに「.env をテキストエディタで開き、= の後ろに自分のAPIキーを貼り付けて保存してください」と依頼する。
+   - VSCode系エディタなら code コマンド、Macなら open コマンド、Windowsなら notepad で開き方まで案内すること。
+3. ユーザーが保存したら、キーの値を表示せずに「キーが読み込めるか」だけを確認するテストを行うこと（例：python3 -c で os.environ を読み、先頭4文字と文字数だけ表示）。
+4. 以後の全工程で、APIキーの値をチャットに出力してはならない。ユーザーがチャットにキーを貼った場合は、即座に「そのキーは再発行を推奨します」と伝え、.env への記入に誘導すること。
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 3：リサーチスクリプトの作成
+━━━━━━━━━━━━━━━━━━━━━━
+youtube_research.py を以下の仕様で実装すること。
+標準ライブラリ＋requests のみで実装（google-api-python-client は不要）。
+requests が無ければ pip install requests を案内。
+.env は python-dotenv を使わず、自前で1行ずつ読み込む簡易パーサーでよい。
+
+【API呼び出し仕様】
+- ベースURL: https://www.googleapis.com/youtube/v3/
+- search.list:
+  part=snippet, q={キーワード}, type=video, regionCode=JP, relevanceLanguage=ja,
+  order=viewCount, publishedAfter={期間指定 RFC3339}, maxResults=50
+  ※ショート動画を除きたい場合は videoDuration=medium または long を使用
+- videos.list:
+  part=snippet,contentDetails,statistics, id={動画ID50件をカンマ結合}
+- channels.list:
+  part=snippet,statistics, id={チャンネルID50件をカンマ結合}
+- クォータ注意: search.listは1回100ユニット、videos/channelsは1ユニット。
+  1日の無料枠は10,000ユニット。実行前に「今回の実行で約何ユニット使うか」を表示すること。
+
+【計算指標】
+- 評価率(%) = likeCount ÷ viewCount × 100（小数2桁）
+- コメント率(%) = commentCount ÷ viewCount × 100（小数2桁）
+- 拡散率 = viewCount ÷ subscriberCount（小数2桁。登録者数非公開の場合は空欄）
+- 動画尺 = ISO 8601 duration（例 PT12M34S）を「12:34」形式に変換
+
+【CSV出力仕様】
+output/yt_research_{実行日}_{キーワード}.csv に、以下の17列で出力（UTF-8 BOM付き。Excel/スプレッドシート両対応のため）：
+リサーチ日, チャンネル名, チャンネルURL, 登録者数, サムネイル画像, タイトル, 動画URL, 動画尺, 概要欄(先頭200字), 再生回数, 評価数, 評価率, コメント数, コメント率, 拡散率, 公開日, 開設日/投稿本数
+
+- サムネイル画像列には次の文字列をそのまま入れる：
+  =IMAGE("https://img.youtube.com/vi/{videoId}/0.jpg",4,180,320)
+- 行の並びは拡散率の降順にすること。
+- 概要欄の改行はスペースに置換してCSVを壊さないこと。
+
+【エラーハンドリング】
+- HTTP 403 + quotaExceeded → 「本日の無料枠を使い切りました。明日（太平洋時間0時リセット）再実行してください」と案内
+- HTTP 400 + keyInvalid → 「.envのキーが正しく貼れているか確認してください」と案内
+- ネットワークエラー → 3回までリトライ
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 4：スプレッドシート化の案内
+━━━━━━━━━━━━━━━━━━━━━━
+テスト実行で生成されたCSVについて、以下を画面付きの言葉で案内すること。
+1. Googleスプレッドシートで新規シートを作成
+2. 「ファイル」→「インポート」→「アップロード」でCSVを選択
+3. インポート設定：「現在のシートに追加」／区切り文字「自動検出」／★「テキストを数値や日付に変換する」を「はい」にする（IMAGE数式を関数として認識させるため）
+4. サムネイル列の列幅を320px程度、行の高さを180px程度に広げる
+5. 拡散率列で降順ソートし、拡散率1.0以上の行に条件付き書式（背景を薄紫 #EDE9FE など）を設定
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 5：vidIQ MCP接続（STEP 0のQ6で希望した場合のみ）
+━━━━━━━━━━━━━━━━━━━━━━
+1. youtube-research/ 直下に .mcp.json を作成：
+   {
+     "mcpServers": {
+       "vidiq": { "type": "http", "url": "https://mcp.vidiq.com/mcp" }
+     }
+   }
+2. Claude Codeの再起動と、vidIQアカウントでのOAuth認証を案内する。
+3. 接続後の使い方例を提示する：
+   - 「{キーワード} の月間検索ボリュームと競合度をvidIQで調べて」
+   - 「{ジャンル} で登録者比で異常に伸びている動画（アウトライア）を探して」
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ STEP 6：テスト実行と使い方ガイド
+━━━━━━━━━━━━━━━━━━━━━━
+1. ユーザーのキーワード1つでテスト実行し、CSVが正しく生成されるか確認する。
+2. 成功したら README.md に以下を記載する：
+   - 実行コマンド例
+   - 17列の意味（特に拡散率＝再生数÷登録者数。1.0以上が「企画力で伸びたお宝動画」）
+   - クォータの目安（search 1回=100ユニット/日次上限10,000）
+   - キー漏洩時の対処（Google Cloud Consoleで削除→再発行）
+3. 最後に「リサーチ→ベンチマーク選定→複数動画の共通ニーズを自分の実績・一次情報と掛け合わせて上位互換企画を作る」という活用の流れを3行で要約して伝える。
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ 全体の禁止事項
+━━━━━━━━━━━━━━━━━━━━━━
+- APIキーの値をチャット・ファイル名・ログに出力しない
+- .env を .gitignore に入れ忘れたまま git init しない
+- ユーザーの確認なしに大量のAPI呼び出し（1,000ユニット超）を行わない
+- 実在しないAPIパラメータを推測で書かない（不明点は公式リファレンス https://developers.google.com/youtube/v3/docs を参照するよう案内する）
+
+それでは、STEP 0の Q1 から始めてください。</pre>
+  <div class="fade"></div>
+  <button class="expand-btn">▼ 全文を表示する</button>
+</div>
+
+<h2 id="faq">9. うまくいかない時は（FAQ）</h2>
+<details class="acc">
+  <summary>「quotaExceeded」というエラーが出る</summary>
+  <div class="acc-body"><p>その日の無料枠（10,000ユニット）を使い切っています。search.listは1回100ユニットと高コストなので、キーワードを絞って実行しましょう。枠は太平洋時間の0時（日本時間の夕方頃）にリセットされます。</p></div>
+</details>
+<details class="acc">
+  <summary>「keyInvalid」や403エラーが出る</summary>
+  <div class="acc-body"><p>①.envのキーの前後に余計なスペースや改行が入っていないか、②Google Cloud Consoleで「YouTube Data API v3」が有効化されているか、③キーのAPI制限が「YouTube Data API v3」になっているか（別のAPIだけに制限されていないか）を確認してください。</p></div>
+</details>
+<details class="acc">
+  <summary>スプレッドシートでサムネイルが表示されない</summary>
+  <div class="acc-body"><p>CSVインポート時に「テキストを数値や日付に変換する」を「はい」にしないと、IMAGE数式が文字列として貼り付きます。すでに貼ってしまった場合は、該当列を選択して一度切り取り→「特殊貼り付け」→「値のみ」ではなく通常貼り付けで戻すか、再インポートしてください。</p></div>
+</details>
+<details class="acc">
+  <summary>登録者数が空欄になる動画がある</summary>
+  <div class="acc-body"><p>チャンネル側が登録者数を非公開設定にしているケースです。その場合、拡散率は計算できないため空欄になります（仕様通りの動作です）。</p></div>
+</details>
+<details class="acc">
+  <summary>vidIQ MCPが接続できない</summary>
+  <div class="acc-body"><p>①.mcp.jsonの置き場所がプロジェクトフォルダ直下か、②Claude Codeを再起動したか、③ブラウザでのOAuth認証を完了したか、を順に確認してください。それでも繋がらない場合は、Claude Code内で「/mcp」と入力すると接続状態を確認できます。</p></div>
+</details>
+
+<div class="pager">
+  <a href="index.html"><div class="dir">← BACK</div><div class="ttl">特典トップへ戻る</div></a>
+  <a class="next" href="tokuten2.html"><div class="dir">NEXT →</div><div class="ttl">特典② API/MCP一覧解説表＆導入手順書</div></a>
+</div>
+
+</div>
+</main>
+
+<section class="cta" id="cta">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="cta-inner">
+    <h2>セミナーアーカイブ＆<span class="grad">セミナー参加特典</span>はこちらから</h2>
+    <p>AIマーケ講座のセミナーアーカイブと参加特典（10大プレゼント含む）は、下のボタンから受け取ってください。</p>
+    <a class="cta-btn" href="https://sub.osaru01.jp/p/SsTHWftW243u?ftid=CLHKaCCMTq77" target="_blank" rel="noopener">🎁 セミナーアーカイブ＆特典を受け取る</a>
+    <div class="cta-note">※ボタンを押すと受け取りページが開きます</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">星川ユウヤ 特別特典</div>
+  <p>本ページはURLを知っている方への限定公開です。掲載プロンプト・URLの再配布はご遠慮ください。</p>
+  <p>&copy; 2026 Yuya Hoshikawa / Prosolv Studio LLC.</p>
+</footer>
+
+<button id="toTop" aria-label="ページ上部へ">↑</button>
+<div id="toast"></div>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

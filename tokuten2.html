@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>特典② コンテンツマーケ効率化 API/MCP一覧解説表＆導入手順書（AI読み込ませOK）｜星川ユウヤ 特別特典</title>
+<meta name="description" content="星川ユウヤがコンテンツマーケ効率化のために実際に使っているAPI/MCPを網羅解説。用途・使用タスク・公式ドキュメント・導入ガイドプロンプト付き。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%23d946ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E特%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<div id="progressBar"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><span class="dot">特</span>星川ユウヤ 特別特典</a>
+    <button class="nav-burger" aria-label="メニュー"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="tokuten1.html">① YouTubeリサーチ自動化</a>
+      <a href="tokuten2.html">② API/MCP大全</a>
+      <a href="tokuten3.html">③ ローカル一撃構築</a>
+      <a class="nav-cta" href="index.html#cta">🎁 セミナー特典を受け取る</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">特典トップ</a> ／ 特典②</div>
+    <h1>コンテンツマーケ効率化<br><span class="grad">API / MCP 一覧解説表</span>＆導入手順書<br>（AI読み込ませOK）</h1>
+    <p class="lead">僕がコンテンツマーケの効率化のために実際に使っているAPI・MCPを、個人情報を除いて網羅しました。それぞれ「なぜ使っているか」「どの作業・タスクで使っているか」を明記し、公式ドキュメントへのボタンを設置しています。ページ最後には、Claude CodeやCodexに貼ると導入を全部手引きしてくれる「導入ガイドプロンプト」を置いています。</p>
+  </div>
+</header>
+
+<main class="section">
+<div class="container prose">
+
+<h2 id="yomikata">1. この一覧表の読み方</h2>
+<div class="container-narrow" style="margin-left:0">
+<ul>
+  <li><strong>API</strong> ＝ プログラム（スクリプト）からサービスを操作する接続口。スクリプトを書いて自動化する時に使う</li>
+  <li><strong>MCP</strong> ＝ Model Context Protocol。<strong>AI（Claude Code等）に「手足」として直接つなぐ</strong>接続方式。設定すればAIとの会話だけでそのサービスを操作できる</li>
+  <li>両対応のサービスは、<strong>まずMCPでつなぎ、複雑な自動化だけAPIスクリプト化</strong>するのが最短ルートです</li>
+  <li>認証方式の目安：<span class="pill oauth">OAuth</span>＝ブラウザでログインして許可するだけ／<span class="pill api">APIキー</span>＝発行したキーを.envで管理（特典①§6と同じ方式）</li>
+</ul>
+<div class="callout warn">
+  <span class="ico">🔐</span>
+  <p><strong>導入前の約束：</strong>どのサービスでも、APIキー・トークンをチャットやスクリプトに直接書かず、<strong>.envファイルに保存して.gitignoreで除外</strong>してください。この手順は最後の「導入ガイドプロンプト」に組み込み済みです。</p>
+</div>
+</div>
+
+<h2 id="catalog">2. API / MCP 一覧解説表</h2>
+
+<!-- ============ A. AI実行基盤 ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🧠</span><h3>A. AI実行基盤（すべての作業の土台）</h3><span class="cat-count">3 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🤖</span><div><div class="tool-name">Claude Code</div><div class="tool-kind"><span class="pill sub">サブスク</span><span class="pill mcp">MCPホスト</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>僕のAI経営の中枢。ローカルフォルダを直接読み書きできるので、「ナレッジを溜める→参照して作る」が1つの環境で完結する。MCPのホストとして全サービスをここに集約している。</p>
+    <div class="tool-tasks"><span>コンテンツ制作全般</span><span>リサーチ</span><span>スクリプト構築</span><span>フォルダ管理</span><span>スキル運用</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">公式ドキュメント</a>
+      <a class="doc-btn alt" href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">MCP接続ガイド</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">⚡</span><div><div class="tool-name">Codex CLI（ChatGPTサブスク枠）</div><div class="tool-kind"><span class="pill sub">サブスク</span><span class="pill api">CLI</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>Claude Codeの相棒。ChatGPTアカウントのサブスク枠で動くので<strong>API従量課金ゼロ</strong>。内蔵の画像生成（gpt-image-2）でサムネ・スライド・バナーを量産できるのが最大の強み。定期実行（automations）も担当。</p>
+    <div class="tool-tasks"><span>画像・サムネ生成</span><span>スライド量産</span><span>定期自動実行</span><span>セカンドオピニオン</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.openai.com/codex/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🖥</span><div><div class="tool-name">Ollama（ローカルLLM）</div><div class="tool-kind"><span class="pill free">無料</span><span class="pill api">ローカル</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>PC内で完結するAI。ネットに出せない画像・ファイルの分類やフォルダ整理など、「軽いが大量」の処理を課金ゼロ・情報漏洩ゼロで回すために使う。Gemma系モデルを載せて運用。</p>
+    <div class="tool-tasks"><span>画像の分類・整理</span><span>フォルダ整理</span><span>機密データの下処理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://ollama.com/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ B. リサーチ・企画 ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🔍</span><h3>B. リサーチ・企画（コンテンツの入口）</h3><span class="cat-count">3 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📺</span><div><div class="tool-name">YouTube Data API v3</div><div class="tool-kind"><span class="pill api">APIキー</span><span class="pill free">無料枠 10,000unit/日</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>競合動画の再生数・登録者数・投稿頻度を機械取得し、<strong>拡散率（再生÷登録者）でお宝動画を発掘</strong>するため。YouTube企画の意思決定をデータドリブンにする核。詳しくは特典①で完全解説。</p>
+    <div class="tool-tasks"><span>競合リサーチシート</span><span>企画ベンチマーク</span><span>キーワード需要調査</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.google.com/youtube/v3/getting-started?hl=ja" target="_blank" rel="noopener">公式ドキュメント</a>
+      <a class="doc-btn alt" href="tokuten1.html">特典①で構築手順を見る</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📈</span><div><div class="tool-name">vidIQ</div><div class="tool-kind"><span class="pill mcp">MCP</span><span class="pill oauth">OAuth</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>YouTube Data APIでは取れない<strong>月間検索ボリューム・競合度・アウトライア（登録者比で異常に伸びた動画）</strong>を取得するため。MCP接続すれば「このKWの検索ボリューム調べて」と話すだけで返ってくる。</p>
+    <div class="tool-tasks"><span>キーワード選定</span><span>お宝動画発掘</span><span>サムネ・タイトルスコア</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://vidiq.com/" target="_blank" rel="noopener">公式サイト</a>
+      <a class="doc-btn alt" href="tokuten1.html#vidiq">MCP接続手順（特典①§7）</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🐦</span><div><div class="tool-name">X API v2</div><div class="tool-kind"><span class="pill api">APIキー</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>自分と競合アカウントの投稿・反応データを取得して、伸びた投稿の型を分析するため。ブックマークの一括取得でリサーチ素材も回収。投稿の自動化よりも「分析・回収」用途がメイン。</p>
+    <div class="tool-tasks"><span>ベンチマーク投稿の収集</span><span>投稿分析</span><span>ブックマーク回収</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developer.x.com/" target="_blank" rel="noopener">公式デベロッパーポータル</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ C. SNS配信 ============ -->
+<div class="cat-head reveal"><span class="cat-ico">📣</span><h3>C. SNS配信・下書き管理（コンテンツの出口）</h3><span class="cat-count">2 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🗓</span><div><div class="tool-name">OmniSocials</div><div class="tool-kind"><span class="pill mcp">MCP</span><span class="pill api">APIキー</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>SNS投稿の下書き・予約投稿の正本置き場。AIで量産した投稿文を<strong>「下書きとして」流し込み、人間が最終確認してから公開</strong>する運用にするため。X・Instagram等の複数媒体を一元管理できる。</p>
+    <div class="tool-tasks"><span>X投稿の下書き投入</span><span>予約投稿</span><span>複数媒体の一元管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://omnisocials.com/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">💬</span><div><div class="tool-name">LINE Messaging API</div><div class="tool-kind"><span class="pill api">チャネルトークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>公式LINEの配信文をAIで作成→配信→登録者数・反応の取得までを自動化するため。リストマーケ（LINE配信・ローンチ）のKPIをスクリプトで日次取得する用途にも使う。</p>
+    <div class="tool-tasks"><span>LINE配信の自動化</span><span>ローンチKPI取得</span><span>ステップ配信管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.line.biz/ja/docs/messaging-api/overview/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ D. Google Workspace ============ -->
+<div class="cat-head reveal"><span class="cat-ico">📊</span><h3>D. Google Workspace API群（ドキュメント自動化）</h3><span class="cat-count">6 APIs</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal" style="grid-column:1/-1">
+    <div class="tool-top"><span class="tool-ico">🧰</span><div><div class="tool-name">Google Sheets / Docs / Slides / Drive / Gmail / Calendar API</div><div class="tool-kind"><span class="pill oauth">OAuth</span><span class="pill free">無料枠内で運用可</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>1つのGoogle Cloudプロジェクト＋1回のOAuth認証で、6つのAPIをまとめて使えるようにしている。<strong>リサーチシートの自動書き込み（Sheets）、議事録・台本のドキュメント化（Docs）、スライド量産（Slides）、元本データの取得（Drive/Gmail）、予定の自動取得（Calendar）</strong>まで、事務作業のほぼ全てがこの群で自動化できる。共有権限は「リンクを知っている全員＝閲覧者」までに留め、編集権限は付与しないのが僕の運用ルール。</p>
+    <div class="tool-tasks"><span>リサーチシート書き込み</span><span>議事録・台本のDocs化</span><span>スライド自動生成</span><span>メール・ファイル回収</span><span>KPIダッシュボード</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.google.com/workspace?hl=ja" target="_blank" rel="noopener">Workspace API 公式トップ</a>
+      <a class="doc-btn alt" href="https://developers.google.com/sheets/api?hl=ja" target="_blank" rel="noopener">Sheets</a>
+      <a class="doc-btn alt" href="https://developers.google.com/docs/api?hl=ja" target="_blank" rel="noopener">Docs</a>
+      <a class="doc-btn alt" href="https://developers.google.com/slides/api?hl=ja" target="_blank" rel="noopener">Slides</a>
+      <a class="doc-btn alt" href="https://developers.google.com/drive/api?hl=ja" target="_blank" rel="noopener">Drive</a>
+      <a class="doc-btn alt" href="https://developers.google.com/gmail/api?hl=ja" target="_blank" rel="noopener">Gmail</a>
+      <a class="doc-btn alt" href="https://developers.google.com/calendar/api?hl=ja" target="_blank" rel="noopener">Calendar</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ E. CS・コミュニティ ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🤝</span><h3>E. CS・コミュニティ運営</h3><span class="cat-count">2 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📮</span><div><div class="tool-name">Chatwork API</div><div class="tool-kind"><span class="pill api">APIトークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>講座受講生のコミュニティ運営で、<strong>未読メッセージの巡回・質問の自動収集・配信文の下書き投入</strong>を自動化するため。「どのルームに何の質問が溜まっているか」をAIが毎朝まとめてくれる状態を作れる。</p>
+    <div class="tool-tasks"><span>受講生質問の自動収集</span><span>CS配信</span><span>未読巡回レポート</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developer.chatwork.com/docs" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🎮</span><div><div class="tool-name">Discord Bot API</div><div class="tool-kind"><span class="pill api">Botトークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>チーム・コミュニティの運営基盤。<strong>AIが作った成果物の「納品チャンネル」への自動送信</strong>、ロール（権限）管理、タスクの吸い上げまでBot経由で自動化。スマホからでも成果物を受け取れる働き方になる。</p>
+    <div class="tool-tasks"><span>成果物のスマホ納品</span><span>ロール・権限管理</span><span>タスク吸い上げ</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://discord.com/developers/docs/intro" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ F. 音声・録画・文字起こし ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🎙</span><h3>F. 音声・録画・文字起こし（一次情報の回収）</h3><span class="cat-count">4 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🎧</span><div><div class="tool-name">Plaud（AIボイスレコーダー）</div><div class="tool-kind"><span class="pill api">APIトークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>日中の会話・思考メモ・打ち合わせの録音を<strong>毎日自動でダウンロード→文字起こし→ナレッジフォルダへ格納</strong>するため。「話しただけの内容」が翌朝にはコンテンツの一次情報になっている、24時間ナレッジパイプラインの入口。</p>
+    <div class="tool-tasks"><span>録音の自動回収</span><span>音声メモのナレッジ化</span><span>コンテンツ一次情報の蓄積</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://www.plaud.ai/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🎥</span><div><div class="tool-name">Zoom API</div><div class="tool-kind"><span class="pill oauth">OAuth</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>セミナー・コンサル・会議の<strong>クラウド録画を自動ダウンロードし、文字起こし→アーカイブページ化・ナレッジ化</strong>するため。セミナーを1回やれば、アーカイブ配布とコンテンツ素材が自動で手に入る流れを作れる。</p>
+    <div class="tool-tasks"><span>録画の自動回収</span><span>セミナーアーカイブ化</span><span>議事録生成</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.zoom.us/docs/api/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🌀</span><div><div class="tool-name">Groq API（Whisper高速文字起こし）</div><div class="tool-kind"><span class="pill api">APIキー</span><span class="pill free">無料枠あり</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>PlaudやZoomで回収した音声を<strong>超高速・低コストで文字起こし</strong>するエンジン。長時間音声もあっという間にテキスト化されるので、文字起こし待ちがボトルネックにならない。</p>
+    <div class="tool-tasks"><span>音声→テキスト変換</span><span>セミナー文字起こし</span><span>パイプラインのSTT層</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://console.groq.com/docs" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📹</span><div><div class="tool-name">Loom</div><div class="tool-kind"><span class="pill sub">サブスク</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>画面収録での指示出し・教材収録用。録画データと文字起こしを<strong>コンテンツ元本フォルダに回収</strong>して、教材・マニュアルの素材として再利用する。</p>
+    <div class="tool-tasks"><span>教材収録</span><span>作業指示の録画</span><span>元本データ回収</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://www.loom.com/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ G. ナレッジ・タスク ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🗃</span><h3>G. ナレッジ・タスク管理</h3><span class="cat-count">3 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📋</span><div><div class="tool-name">Trello API</div><div class="tool-kind"><span class="pill api">APIキー</span><span class="pill free">無料</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>タスクの正本管理。AIが<strong>Discordや議事録から拾ったタスクを毎日自動でカード化</strong>し、チェックリスト付きで起票してくれる。人間はTrelloを見るだけでいい状態を作る。</p>
+    <div class="tool-tasks"><span>タスク自動起票</span><span>日次タスクカード生成</span><span>進捗の一元管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developer.atlassian.com/cloud/trello/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📝</span><div><div class="tool-name">Notion MCP</div><div class="tool-kind"><span class="pill mcp">MCP</span><span class="pill oauth">OAuth</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>クライアント・チームとの共有ドキュメント基盤。AIがそのままページ作成・DB更新できるので、<strong>「AIが作る→Notionで共有」の受け渡しコストがゼロ</strong>になる。</p>
+    <div class="tool-tasks"><span>共有ドキュメント作成</span><span>ナレッジDB更新</span><span>クライアント納品</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.notion.com/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🧭</span><div><div class="tool-name">MindMeister API</div><div class="tool-kind"><span class="pill api">APIトークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>マインドマップで作った企画構造・講座設計を<strong>データとして取り出してAIに渡す</strong>ため。頭の中の整理はマップで、肉付けはAIで、という分業ができる。</p>
+    <div class="tool-tasks"><span>企画構造の取り出し</span><span>講座設計の素材化</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://www.mindmeister.com/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ H. バックオフィス ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🏢</span><h3>H. バックオフィス（経理・ファネル）</h3><span class="cat-count">2 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">💴</span><div><div class="tool-name">freee API</div><div class="tool-kind"><span class="pill oauth">OAuth</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>法人経理の自動化。<strong>仕訳の登録・レシートの取り込み・月次決算のチェック</strong>をAI経由で回し、経理作業を「AIが下書き→人間が承認」に変えるため。</p>
+    <div class="tool-tasks"><span>仕訳自動登録</span><span>月次決算補助</span><span>請求書管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developer.freee.co.jp/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🚀</span><div><div class="tool-name">UTAGE API</div><div class="tool-kind"><span class="pill api">APIキー</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>ファネル（LP・オプトイン・決済・ステップ配信）を担うUTAGEの数値を<strong>ローンチ期間中に自動取得して、KPIボードに反映</strong>するため。登録数・成約数を見にいく作業をなくす。</p>
+    <div class="tool-tasks"><span>ローンチKPI自動取得</span><span>ファネル数値レポート</span><span>LP・ページ管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://utage-system.com/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ I. 広告・生成 ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🎨</span><h3>I. 広告・画像/動画生成</h3><span class="cat-count">3 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">📢</span><div><div class="tool-name">Meta Marketing API</div><div class="tool-kind"><span class="pill api">アクセストークン</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>Meta広告（Facebook/Instagram）の<strong>成果データを日次で自動取得し、クリエイティブの当たり外れをAIに分析させる</strong>ため。レポート作成の手作業を廃止できる。</p>
+    <div class="tool-tasks"><span>広告成果の日次取得</span><span>クリエイティブ分析</span><span>レポート自動化</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.facebook.com/docs/marketing-apis/" target="_blank" rel="noopener">公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🖼</span><div><div class="tool-name">gpt-image-2（Codex内蔵 Image2）</div><div class="tool-kind"><span class="pill sub">サブスク枠</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>サムネ・バナー・スライド画像の生成エンジン。<strong>ChatGPTサブスクの範囲内で動くので、画像を何百枚作っても追加課金ゼロ</strong>。画像生成をAPI従量課金でやらないのが僕の鉄則（1枚数十円の課金は量産すると事故る）。</p>
+    <div class="tool-tasks"><span>サムネ生成</span><span>スライド画像量産</span><span>バナー・告知画像</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://developers.openai.com/codex/" target="_blank" rel="noopener">Codex 公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🎬</span><div><div class="tool-name">fal.ai（Seedance 動画生成）</div><div class="tool-kind"><span class="pill api">APIキー</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>テキスト・画像からの動画生成。ショート動画・オープニング映像の素材づくりに使う。<strong>従量課金なので、生成前に必ず料金を確認してから使う</strong>枠として運用している。</p>
+    <div class="tool-tasks"><span>ショート動画素材</span><span>OP・演出映像生成</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://fal.ai/" target="_blank" rel="noopener">公式サイト</a>
+    </div>
+  </article>
+</div>
+
+<!-- ============ J. ブラウザ操作 ============ -->
+<div class="cat-head reveal"><span class="cat-ico">🌐</span><h3>J. ブラウザ・PC操作</h3><span class="cat-count">2 TOOLS</span></div>
+<div class="tool-grid">
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">🧩</span><div><div class="tool-name">Claude in Chrome（ブラウザMCP）</div><div class="tool-kind"><span class="pill mcp">MCP</span><span class="pill free">拡張機能</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>APIが無いWebサービス（管理画面しかないSaaS等）をAIに操作してもらうための最後のピース。<strong>「APIがあるならAPI、無ければブラウザMCP」</strong>という優先順位で使う。</p>
+    <div class="tool-tasks"><span>API非対応SaaSの操作</span><span>Webリサーチ</span><span>フォーム入力補助</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Claude 公式ドキュメント</a>
+    </div>
+  </article>
+  <article class="tool-card reveal">
+    <div class="tool-top"><span class="tool-ico">☁️</span><div><div class="tool-name">GitHub（gh CLI＋GitHub Pages）</div><div class="tool-kind"><span class="pill free">無料</span><span class="pill oauth">OAuth</span></div></div></div>
+    <p class="tool-why"><b>なぜ使うか：</b>AIが作ったHTMLサイト（アーカイブページ・特典サイト・マニュアル）を<strong>そのままWebに公開する</strong>ため。この特典サイト自体もこの仕組みで公開している。コマンド一発でデプロイできる。</p>
+    <div class="tool-tasks"><span>特典・資料サイト公開</span><span>アーカイブページ配布</span><span>コード管理</span></div>
+    <div class="tool-links">
+      <a class="doc-btn" href="https://cli.github.com/" target="_blank" rel="noopener">gh CLI 公式</a>
+      <a class="doc-btn alt" href="https://docs.github.com/ja/pages" target="_blank" rel="noopener">GitHub Pages ドキュメント</a>
+    </div>
+  </article>
+</div>
+
+<h2 id="retired">3. 廃止済み・乗り換え済みのツール（参考）</h2>
+<p>「昔は使っていたが、今は使っていない」ものも正直に載せておきます。同じ轍を踏まないための情報です。</p>
+<div class="table-wrap">
+<table class="rich">
+  <tr><th>廃止したもの</th><th>乗り換え先</th><th>理由</th></tr>
+  <tr><td><span class="pill dep">廃止</span> <strong>Typefully</strong></td><td>OmniSocials</td><td>複数媒体の一元管理と運用フローの都合で移行</td></tr>
+  <tr><td><span class="pill dep">廃止</span> <strong>Todoist</strong></td><td>Trello</td><td>タスク正本を1箇所に統一するため</td></tr>
+  <tr><td><span class="pill dep">廃止</span> <strong>画像生成のAPI従量課金（DALL-E API・Gemini画像系）</strong></td><td>Codex内蔵 Image2（サブスク枠）</td><td>量産すると従量課金が事故るため。<strong>生成系はサブスク枠に固定</strong>が鉄則</td></tr>
+</table>
+</div>
+
+<h2 id="prompt2">4. AI導入ガイドプロンプト（Claude Code / Codexに貼るだけ）</h2>
+<p>この一覧表の内容を丸ごと埋め込んだ「導入ガイドプロンプト」です。コピーしてClaude CodeやCodexに貼ると、AIがあなたの事業内容をヒアリングし、<strong>必要なツールの選定→取得URL案内→.env設定→接続テストまで、最初から最後まで手引き</strong>してくれます。</p>
+
+<div class="codebox collapsible">
+  <div class="codebox-head">
+    <div class="codebox-title"><span class="dots"><i></i><i></i><i></i></span><span>API/MCP 導入ガイドプロンプト（AI読み込ませ用）</span></div>
+    <button class="copy-btn" data-copy-target="code-prompt2">📋 プロンプト全文をコピー</button>
+  </div>
+  <pre id="code-prompt2">あなたは「コンテンツマーケ効率化のためのAPI/MCP導入ガイド」です。
+以下のツールカタログの知識を使って、私の環境に必要なAPI/MCPの導入を、選定から接続テストまで手引きしてください。
+私は非エンジニアの可能性があります。1ステップずつ、URLを明示しながら案内してください。
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ ツールカタログ（この中から提案すること）
+━━━━━━━━━━━━━━━━━━━━━━
+【AI実行基盤】
+- Claude Code｜サブスク｜ローカル作業の中枢・MCPホスト｜https://docs.claude.com/en/docs/claude-code/overview
+- Codex CLI｜ChatGPTサブスク枠｜画像生成(gpt-image-2)・定期実行｜https://developers.openai.com/codex/
+- Ollama｜無料・ローカルLLM｜機密ファイルの分類・整理｜https://ollama.com/
+
+【リサーチ・企画】
+- YouTube Data API v3｜APIキー・無料枠10,000unit/日｜競合リサーチ・拡散率分析｜https://developers.google.com/youtube/v3/getting-started
+- vidIQ MCP｜OAuth｜検索ボリューム・競合度・アウトライア発掘｜https://vidiq.com/ ｜MCP設定: {"mcpServers":{"vidiq":{"type":"http","url":"https://mcp.vidiq.com/mcp"}}}
+- X API v2｜APIキー｜投稿分析・ベンチマーク収集｜https://developer.x.com/
+
+【SNS配信】
+- OmniSocials｜MCP/APIキー｜SNS下書き・予約投稿の一元管理｜https://omnisocials.com/
+- LINE Messaging API｜チャネルトークン｜LINE配信自動化・KPI取得｜https://developers.line.biz/ja/docs/messaging-api/overview/
+
+【Google Workspace（1プロジェクトでまとめてOAuth認証）】
+- Sheets/Docs/Slides/Drive/Gmail/Calendar API｜OAuth｜シート書き込み・ドキュメント生成・スライド量産・データ回収・予定取得｜https://developers.google.com/workspace
+
+【CS・コミュニティ】
+- Chatwork API｜APIトークン｜質問収集・配信・未読巡回｜https://developer.chatwork.com/docs
+- Discord Bot API｜Botトークン｜成果物納品・権限管理・タスク吸い上げ｜https://discord.com/developers/docs/intro
+
+【音声・録画・文字起こし】
+- Plaud｜APIトークン｜録音の自動回収→ナレッジ化｜https://www.plaud.ai/
+- Zoom API｜OAuth｜録画自動回収・アーカイブ化｜https://developers.zoom.us/docs/api/
+- Groq API（Whisper）｜APIキー・無料枠あり｜高速文字起こし｜https://console.groq.com/docs
+- Loom｜サブスク｜画面収録・教材素材の回収｜https://www.loom.com/
+
+【ナレッジ・タスク管理】
+- Trello API｜APIキー・無料｜タスク自動起票・正本管理｜https://developer.atlassian.com/cloud/trello/
+- Notion MCP｜OAuth｜共有ドキュメント・ナレッジDB｜https://developers.notion.com/
+- MindMeister｜APIトークン｜マインドマップの企画構造取り出し｜https://www.mindmeister.com/
+
+【バックオフィス】
+- freee API｜OAuth｜仕訳自動化・月次決算補助｜https://developer.freee.co.jp/
+- UTAGE API｜APIキー｜ファネルKPI自動取得｜https://utage-system.com/
+
+【広告・生成】
+- Meta Marketing API｜アクセストークン｜広告成果の日次取得・分析｜https://developers.facebook.com/docs/marketing-apis/
+- gpt-image-2（Codex内蔵Image2）｜サブスク枠｜サムネ・バナー・スライド画像生成（画像生成をAPI従量課金でやらないこと）
+- fal.ai（Seedance等）｜APIキー・従量課金｜動画生成（使用前に必ず料金確認）
+
+【ブラウザ・公開】
+- Claude in Chrome｜拡張機能｜API非対応SaaSのブラウザ操作
+- GitHub（gh CLI＋GitHub Pages）｜無料｜HTMLサイト・資料の公開｜https://cli.github.com/
+
+【選定の原則】
+1. 同じ目的ならMCP＞APIスクリプト＞ブラウザ操作の順で楽な方を選ぶ
+2. 画像・コンテンツ生成はサブスク枠を最優先。従量課金APIは事前に単価確認
+3. 認証情報は必ず.envファイル管理（チャット・コード直書き禁止）
+4. SNS・メール等の「外部送信」は必ず下書き止め→人間が承認して公開
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ 進め方
+━━━━━━━━━━━━━━━━━━━━━━
+STEP 1｜ヒアリング（1問ずつ聞くこと）
+  Q1. あなたのビジネスは何ですか？（例：講座販売／コンテンツ販売／受託／コーチング／物販）
+  Q2. 今使っているSNS媒体・配信媒体は？（YouTube/X/Instagram/LINE/メルマガ等）
+  Q3. 今いちばん時間を奪われている作業は？（リサーチ／投稿作成／CS対応／経理／レポート等）
+  Q4. すでに契約しているツール・サブスクは？（ChatGPT/Claude/Notion/freee等）
+  Q5. 使用するAIエディタは？（Claude Code／Cursor／Codex CLI）
+
+STEP 2｜導入プラン提案
+  - 回答をもとに、カタログから「最初に入れるべき3つ」「次の3つ」「今は不要」に分類して提案する
+  - それぞれ「何の作業が」「どう楽になるか」を1行で添える
+  - 月額・無料枠の目安も添える（不明なものは「公式で要確認」と正直に書く）
+
+STEP 3｜1ツールずつ導入実行
+  選ばれたツールごとに、以下のテンプレで案内すること：
+  (1) アカウント登録・キー発行のURL（カタログのURLを明示。手順は公式ドキュメントの表記に従う）
+  (2) 取得した認証情報の保存：プロジェクト直下の .env に KEY名=値 で保存させる
+      ・キーの値をチャットに貼らせないこと。「.env に直接貼ってください」と案内する
+      ・.gitignore に .env を必ず追加する
+  (3) 接続テスト：キーの値を表示せずに接続確認だけを行うスクリプト or MCP接続確認
+  (4) 最初の活用例を1つ実行してみせる（例：Trelloにテストカードを作る、Sheetsにテスト行を書く）
+
+STEP 4｜完了レポート
+  - 導入済みツールの一覧、.envに保存済みのKEY名（値は伏せる）、次に追加すべきツールをまとめる
+
+━━━━━━━━━━━━━━━━━━━━━━
+■ 禁止事項
+━━━━━━━━━━━━━━━━━━━━━━
+- 認証情報の値をチャット・ログ・ファイル名に出力しない
+- カタログにないツールを推測で「使っている」と言わない（追加提案する時は「カタログ外の提案」と明示する）
+- 存在しないAPIエンドポイント・料金を推測で断言しない（不明点は公式URLを案内する）
+- ユーザーの確認なしに外部へのメッセージ送信・投稿・公開を実行しない
+
+それでは、STEP 1 の Q1 から始めてください。</pre>
+  <div class="fade"></div>
+  <button class="expand-btn">▼ 全文を表示する</button>
+</div>
+
+<div class="callout tip">
+  <span class="ico">💡</span>
+  <p><strong>使い方のコツ：</strong>全部を一気に入れる必要はありません。おすすめは「YouTube Data API＋vidIQ（特典①）」→「Google Workspace」→「自分のCS・配信ツール」の順。<strong>いちばん時間を奪われている作業から潰す</strong>のが投資対効果の最大化ルートです。</p>
+</div>
+
+<div class="pager">
+  <a href="tokuten1.html"><div class="dir">← PREV</div><div class="ttl">特典① YouTube企画リサーチ自動化マニュアル</div></a>
+  <a class="next" href="tokuten3.html"><div class="dir">NEXT →</div><div class="ttl">特典③ ローカルディレクトリ一撃構築プロンプト</div></a>
+</div>
+
+</div>
+</main>
+
+<section class="cta" id="cta">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="cta-inner">
+    <h2>セミナーアーカイブ＆<span class="grad">セミナー参加特典</span>はこちらから</h2>
+    <p>AIマーケ講座のセミナーアーカイブと参加特典（10大プレゼント含む）は、下のボタンから受け取ってください。</p>
+    <a class="cta-btn" href="https://sub.osaru01.jp/p/SsTHWftW243u?ftid=CLHKaCCMTq77" target="_blank" rel="noopener">🎁 セミナーアーカイブ＆特典を受け取る</a>
+    <div class="cta-note">※ボタンを押すと受け取りページが開きます</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">星川ユウヤ 特別特典</div>
+  <p>本ページはURLを知っている方への限定公開です。掲載プロンプト・URLの再配布はご遠慮ください。</p>
+  <p>&copy; 2026 Yuya Hoshikawa / Prosolv Studio LLC.</p>
+</footer>
+
+<button id="toTop" aria-label="ページ上部へ">↑</button>
+<div id="toast"></div>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
